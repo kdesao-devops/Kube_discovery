@@ -1,0 +1,11 @@
+global:
+  domain: argocd.localtest.me
+
+configs:
+  params:
+    server.insecure: true     # TLS terminé plus tard à l'Ingress, évite une boucle de redirections
+
+server:
+  ingress:
+    enabled: true
+    ingressClassName: traefik
