@@ -28,3 +28,30 @@ Created the CLI_Debut.sh
 Day 3 - Sealed Secrets + scheduling
 - Install kubeseal utilities [repo](https://github.com/bitnami/sealed-secrets)
 
+
+### Rule: never copy chart URLs or versions from tutorials
+
+**Problem**
+Tutorials go stale. Two incidents came from copying values instead of reading them:
+- podinfo: wrong `targetRevision` (a version that does not exist).
+- sealed-secrets: repo URL moved to another GitHub org (404), and `targetRevision`
+  set to the **app** version instead of the **chart** version.
+
+**Procedure before writing any Argo CD Application**
+1. Add the repo locally:
+   `helm repo add <name> <url> && helm repo update`
+2. Read the available versions:
+   `helm search repo <name>/<chart> --versions | head`
+   Use the `CHART VERSION` column, never `APP VERSION`.
+3. Read the defaults:
+   `helm show values <name>/<chart> --version <v> | less`
+   (image registry, fullnameOverride, ingress options)
+4. Dry-run the render:
+   `helm template test <name>/<chart> --version <v> -f values.yaml | less`
+5. Only then write the Application with the verified `repoURL`, `chart`
+   and pinned `targetRevision`, and push.
+
+**If it still breaks**
+`k -n argocd get app <name> -o jsonpath='{.status.conditions}' | jq .`
+then `404` means wrong or moved URL, and `version not found` means wrong `targetRevision`.
+
