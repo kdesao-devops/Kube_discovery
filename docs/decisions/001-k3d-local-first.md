@@ -24,3 +24,7 @@ Created the CLI_Debut.sh
 - Image comes from the chart's default values (ghcr.io), not from Git.
 - `Sync Unknown` on podinfo: wrong `targetRevision`. Diagnosed via
   `.status.conditions` (ComparisonError), fixed by pinning an existing chart version.
+
+Day 3 - Sealed Secrets + scheduling
+- Install kubeseal utilities [repo](https://github.com/bitnami/sealed-secrets)
+
