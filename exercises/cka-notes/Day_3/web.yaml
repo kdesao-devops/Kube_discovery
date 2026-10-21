@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:                      # <- spec du Deployment
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+  template:                # <- modèle de pod
+    metadata:
+      labels:
+        app: web
+    spec:                  # <- spec du POD : c'est ici que tu ajoutes affinity
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: web
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - name: nginx
+        image: nginx

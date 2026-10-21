@@ -25,11 +25,11 @@ Created the CLI_Debut.sh
 - `Sync Unknown` on podinfo: wrong `targetRevision`. Diagnosed via
   `.status.conditions` (ComparisonError), fixed by pinning an existing chart version.
 
-Day 3 - Sealed Secrets + scheduling
+## Day 3 - Sealed Secrets + scheduling
+
+### Part 1 Sealed secret
 - Install kubeseal utilities [repo](https://github.com/bitnami/sealed-secrets)
-
-
-### Rule: never copy chart URLs or versions from tutorials
+#### Rule: never copy chart URLs or versions from tutorials
 
 **Problem**
 Tutorials go stale. Two incidents came from copying values instead of reading them:
@@ -51,7 +51,26 @@ Tutorials go stale. Two incidents came from copying values instead of reading th
 5. Only then write the Application with the verified `repoURL`, `chart`
    and pinned `targetRevision`, and push.
 
-**If it still breaks**
-`k -n argocd get app <name> -o jsonpath='{.status.conditions}' | jq .`
-then `404` means wrong or moved URL, and `version not found` means wrong `targetRevision`.
+## CKA: Scheduling
 
+In a dedicated namespace: (Exersice realised in 40mn)
+
+1. Generate a Deployment YAML (`k create deploy ... $do`), never write it from scratch.
+2. **nodeSelector**: label an agent (`disk=ssd`) and pin pods to it.
+3. **Taint / toleration**: taint an agent with an arbitrary `key=value:effect`, then add the matching toleration to the pod spec (`spec.template.spec` for a Deployment). Compare `NoSchedule` vs `NoExecute`.
+4. **Node maintenance**: `cordon` -> `drain` -> `uncordon` on one agent.
+5. **Troubleshooting**: set an impossible `nodeSelector` (`disk=nvme`) and read the `FailedScheduling` message in `describe pod` (Events).
+
+Key takeaways:
+- A bare pod is immutable (recreate with `k replace --force -f`), a Deployment can be edited (rolling update).
+- Drain refuses pods without a controller (`--force` to override).
+
+### Isolate the control-plane (k3d)
+
+K3s/k3d does not taint the server, so application pods can land on it. To mimic kubeadm, do this **systematically in local** after creating the cluster:
+
+```bash
+k taint node k3d-lab-server-0 node-role.kubernetes.io/control-plane:NoSchedule
+```
+
+> Not needed in the exam: kubeadm clusters already have this taint by default.
