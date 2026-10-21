@@ -74,3 +74,11 @@ k taint node k3d-lab-server-0 node-role.kubernetes.io/control-plane:NoSchedule
 ```
 
 > Not needed in the exam: kubeadm clusters already have this taint by default.
+
+## Day 4 Keycloak creation
+
+1. Password protection with kubeseal
+2. Creation of the stateful platform postgre with PVC
+3. Creation of the deployement platform Keyclaok with necessary varibable + Ingress bloc
+4. Creation of the ArgoCD keycloack app 
+5. Successful Deployement thanks to AI Debug
