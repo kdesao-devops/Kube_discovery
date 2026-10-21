@@ -1,0 +1,13 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: keycloak-db
+  namespace: keycloak
+spec:
+  encryptedData:
+    password: AgAKRNw0/5EqjDhShDUOtDJyzbQr4dD8J53DS5ABOEuPUWdS3eA27vUk2NJRMjAt8ifW1C+oCrcwEAasL1lt3uuzOsQSo2jUGX5PzqTDFx+piLHKRLE5h7sot1U25HxDWbSsQk7EZaM6hJcmc0jYwBF/o6JB8yR2RWSSW89yYsGVmuwyRwDDf7eSMFw5SPLewyLU191qhj9AZrWm9GhUrhELG2kMvLvZdqIOffJkjlU0T/f50iLnTNHbiNp9b0msZB9ES5HyUOXUTpqZms7TxlZguQtlsDJruB22NT0ZTxIX+ALn3H5rgcRTW16Bxj26pVfsrsTKWHbt5sVXDwcVo4amMQBiN6ES6GhcWfRycIqI3Whx82HsXBxXZm1ciZAnUap9EC0f6HwQ5Z7Cj7CuLw8l/DUOnZAPKYa+Dd7DXmMxHnLtGLPqGsAO7MiHf5wsCqq/6TgPoPEo4CyAQjUEhYQxXoNnIGyFtJAIYzEiPrIkmoP6wwNvJrYcS9HmZJ9mXWSElMiNd/23EoUyVJUzzUOUxi9nvYRmPZWgzgbW6gvFEKLNBG0VzduQ1ARuw6eVVLVmGss/TH/vxA16N7zsdLyRJHqTitr19FJA+397iGqmM4PEnvZyCqXTDfxPimSTdLIEPgPJ6L+0cP9wgjt1DguKouUggAC5Xx4ETRI93L/EoYFpxfrLhq5sULlR5hT6RdihJOkp2Q23Xe51BhEngmW6WiAfXg0mYFU=
+  template:
+    metadata:
+      name: keycloak-db
+      namespace: keycloak
