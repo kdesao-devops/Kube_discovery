@@ -24,6 +24,11 @@ Created the CLI_Debut.sh
 - Image comes from the chart's default values (ghcr.io), not from Git.
 - `Sync Unknown` on podinfo: wrong `targetRevision`. Diagnosed via
   `.status.conditions` (ComparisonError), fixed by pinning an existing chart version.
+```
+# Versions Helm
+helm list -n argocd
+helm search repo argo/argo-cd --versions | head -10
+```
 
 ## Day 3 - Sealed Secrets + scheduling
 
@@ -75,10 +80,77 @@ k taint node k3d-lab-server-0 node-role.kubernetes.io/control-plane:NoSchedule
 
 > Not needed in the exam: kubeadm clusters already have this taint by default.
 
-## Day 4 Keycloak creation
+## Day 4 – Keycloak + PostgreSQL via Argo CD
 
-1. Password protection with kubeseal
-2. Creation of the stateful platform postgre with PVC
-3. Creation of the deployement platform Keyclaok with necessary varibable + Ingress bloc
-4. Creation of the ArgoCD keycloack app 
-5. Successful Deployement thanks to AI Debug
+### Réalisé
+1. Secrets chiffrés avec kubeseal (keycloak-db, keycloak-admin)
+2. PostgreSQL : StatefulSet + volumeClaimTemplates (local-path, 2Gi)
+3. Keycloak : Deployment + Service 8080 + Ingress (Traefik)
+4. Application Argo CD pointant sur gitops/platform/keycloak
+
+### Concepts à retenir
+- Deployment = pods interchangeables / StatefulSet = identité + volume propre
+- volumeClaimTemplates : un PVC par réplica, non supprimé avec le StatefulSet
+- Probe exécutée par le kubelet sur l'IP du pod (pas via Service/Ingress)
+- JDBC : Keycloak est en Java, d'où jdbc:postgresql://<service>:5432/<db>
+
+### Erreurs rencontrées
+- Application Argo : path et chart sont exclusifs
+- serviceName n'existe pas dans un Deployment
+- Le nom du Service doit correspondre à backend.service.name de l'Ingress
+- Probe sur le mauvais port (900 au lieu de 9000)
+
+### Commandes de debug
+k describe pod / k logs / k get events -n keycloak
+k get sealedsecret,secret -n keycloak
+
+### À revoir
+- [ ] Écrire un StatefulSet + PVC de mémoire
+- [ ] Créer un Secret et le monter en env et en volume
+
+## Day 5 Connexion à ArgoCD via OIDC avec Keycloak + config via Terraform
+
+### Réalisé
+1. Install Terraform + création de la config nécessaire à l'OIDC (client `argocd`, client scope `groups`, mapper Group Membership)
+2. Configuration d'ArgoCD pour l'OIDC via Keycloak (`oidc.config` dans les values Helm)
+3. Configuration de la RBAC policy : mapping groupe Keycloak → rôle ArgoCD
+4. Rewrite CoreDNS pour que les pods résolvent `keycloak.localtest.me` vers Traefik
+5. Test de la connexion et des autorisations avec différents utilisateurs
+
+### Concepts à retenir
+- **Keycloak dit qui est qui, ArgoCD décide des droits.** Keycloak met `"groups": [...]` dans le token, ArgoCD fait le lien avec ses rôles (`g, platform-admins, role:admin`).
+- Le nom du groupe doit matcher exactement (casse incluse) : d'où `full_path = false`.
+- **Client scope Default vs Optional** : Default = toujours dans le token, Optional = seulement si l'appli le demande dans `scope`.
+- Créer un scope ≠ l'assigner à un client : deux ressources Terraform distinctes.
+- Les ressources `*_default_scopes` sont **autoritaires** : elles remplacent toute la liste, il faut relister les scopes standards.
+- Le logout ArgoCD ne ferme **que** la session ArgoCD, la session Keycloak reste ouverte (SSO), sauf si on configure `logoutURL`.
+- Dans un pod, `localtest.me` → `127.0.0.1` pointe sur le pod lui-même, d'où le rewrite CoreDNS.
+
+### Erreurs rencontrées
+- **YAML values mal indenté** : `server.insecure` n'était pas sous `configs.params`.
+- **`invalid_scope`** : le scope s'appelait `argocd-client-scope` au lieu de `groups`, donc Keycloak ne le reconnaissait pas pour ce client.
+- **`failed to verify the token`** : état de login périmé d'une première connexion ratée, réglé en retentant.
+- **`redirigé à de trop nombreuses reprises`** : cookies/cache navigateur corrompus après le logout, résolu en navigation privée ou en vidant les cookies.
+- `wget: not found` dans le pod ArgoCD : utiliser un pod `busybox` temporaire.
+
+### Commandes de debug
+​```bash
+# DNS depuis le cluster
+k run dns-test --image=busybox:1.36 -it --rm --restart=Never -- nslookup keycloak.localtest.me
+k -n kube-system get svc traefik
+
+# Discovery OIDC depuis le cluster
+k run http-test --image=busybox:1.36 -it --rm --restart=Never -- \
+  wget -qO- -T 3 http://keycloak.localtest.me/realms/lab/.well-known/openid-configuration
+
+# Logs ArgoCD + redémarrage après changement de config
+k -n argocd logs deploy/argocd-server --tail=100
+k -n argocd rollout restart deploy/argocd-server
+​```
+Dans l'UI : Keycloak → Clients → argocd → Client scopes → **Evaluate** ; ArgoCD → **User Info** (groupes reçus).
+
+### À revoir
+- [ ] Logout complet (`logoutURL` + `valid_post_logout_redirect_uris`) : fait mais pas vraiment validé
+- [x] Gestion du Secret `argocd-oidc`
+- [ ] Passage au TLS (`rootCA` à rajouter pour la validation du certificat)
+- [x] Tester le rôle `developer` (get/sync mais pas Settings)
