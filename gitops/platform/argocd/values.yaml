@@ -4,6 +4,24 @@ global:
 configs:
   params:
     server.insecure: true     # TLS terminé plus tard à l'Ingress, évite une boucle de redirections
+  cm:
+    url: http://argocd.localtest.me
+    oidc.config: |
+      name: Keycloak
+      issuer: http://keycloak.localtest.me/realms/lab
+      clientID: argocd
+      clientSecret: $argocd-oidc:clientSecret
+      requestedScopes: ["openid", "profile", "email", "groups"]
+      logoutURL: http://keycloak.localtest.me/realms/lab/protocol/openid-connect/logout?id_token_hint={{token}}&post_logout_redirect_uri={{logoutRedirectURL}}
+  rbac:
+    policy.default: ""
+    scopes: "[groups]"
+    policy.csv: |
+      p, role:developer, applications, get, */*, allow
+      p, role:developer, applications, sync, */*, allow
+      p, role:developer, projects, get, *, allow
+      g, platform-admins, role:admin
+      g, developers, role:developer
 
 server:
   ingress:
