@@ -150,7 +150,7 @@ k -n argocd rollout restart deploy/argocd-server
 Dans l'UI : Keycloak → Clients → argocd → Client scopes → **Evaluate** ; ArgoCD → **User Info** (groupes reçus).
 
 ### À revoir
-- [ ] Logout complet (`logoutURL` + `valid_post_logout_redirect_uris`) : fait mais pas vraiment validé
+- [x] Logout complet (`logoutURL` + `valid_post_logout_redirect_uris`)
 - [x] Gestion du Secret `argocd-oidc`
 - [ ] Passage au TLS (`rootCA` à rajouter pour la validation du certificat)
 - [x] Tester le rôle `developer` (get/sync mais pas Settings)
