@@ -1,7 +1,18 @@
-# Used to keep track of Exo completion time
+# CKA Drills - Time & Mastery Tracker
 
-## Exercise methodology
-I will be asking the AI to take a previously made Exercise, and explain the commands / goal without telling me what it the corresponding command.
-Then I will add the command under everyline and at the end compare the results
+## Methodology
+1. Prompt an AI to translate previous lab commands into high-level operational goals (no syntax/clues).
+2. Write each command underneath without looking at solutions.
+3. Validate against solutions, note blockers, and record timing.
+4. **Target:** < 8-10 minutes per standard scenario, 100% unassisted.
 
-Day 6 -> 59 *with help*
+## Progress Log
+
+| Date | Lab / Topic | Attempt | Time | Mode | Blockers / Lessons Learned |
+|---|---|---|---|---|---|
+| Day 6 | Deployment, Svc, Ingress, k3d | #1 | 59 min | Assisted (AI clues) | `targetPort` vs `port` mismatch; Zsh globbing on `*` in `--rule` |
+| Day 7 | Deployment, Svc, Ingress, k3d | #2 | -- min | Solo | Target: < 15 min |
+
+## Rules of Engagement
+- **Solo:** Only official Kubernetes documentation (`kubernetes.io/docs`) and `kubectl explain`.
+- **Assisted:** External prompts, search engines, or AI feedback.
