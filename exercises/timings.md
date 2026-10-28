@@ -12,6 +12,7 @@
 |---|---|---|---|---|---|
 | Day 6 | Deployment, Svc, Ingress, k3d | #1 | 59 min | Assisted (AI clues) | `targetPort` vs `port` mismatch; Zsh globbing on `*` in `--rule` |
 | Day 7 | CKA Course | #2 | 4h | Assisted | Target: 4h |
+| Day 8 | CKA Course | #3 | 2h | Assisted | Target: 4h |
 
 ## Rules of Engagement
 - **Solo:** Only official Kubernetes documentation (`kubernetes.io/docs`) and `kubectl explain`.
