@@ -14,6 +14,7 @@
 | Day 7 | CKA Course | #2 | 4h | Assisted | Target: 4h |
 | Day 8 | CKA Course | #3 | 2h | Assisted | Target: 4h |
 | Day 9 | CKA Course | #4 | 5h | Assisted | Target: 4h |
+| Day 10 | CKA Course | #5 | 4h | Assisted | Target: 4h |
 
 
 ## Rules of Engagement
