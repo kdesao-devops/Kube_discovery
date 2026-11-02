@@ -185,3 +185,33 @@ kubectl run static-busybox --image=busybox -n default --dry-run=client -o yaml -
 
 * **PriorityClasses** define the relative priority of pods for scheduling.
 * If a high-priority pod cannot be scheduled due to insufficient resources, the scheduler can trigger **preemption**, terminating lower-priority pods to release capacity.
+
+### LAB - Priorities & PriorityClass
+
+```bash
+# Vérifier les PriorityClasses existantes dans le cluster
+kubectl get priorityclasses.scheduling.k8s.io
+
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority
+value: 100000
+description: "lab priority policy"
+preemptionPolicy: "PreemptLowerPriority"
+globalDefault: false
+
+# Déployer la PriorityClass (préférer apply pour les annotations déclaratives)
+kubectl apply -f PriorityClass.yaml
+
+# Vérifier la priorité affectée aux pods
+kubectl get pods -o custom-columns="NAME:.metadata.name,PRIORITY:.spec.priorityClassName"
+
+# Assigner la PriorityClass à un pod existant (nécessite recréation)
+kubectl get pod critical-app -o yaml > critical-app.yaml
+# Dans critical-app.yaml : 
+# 1. Supprimer le champ live 'priority: 0' (généré par le cluster)
+# 2. Ajouter sous spec : priorityClassName: high-priority
+# 3. Supprimer et recréer le pod :
+kubectl replace --force -f critical-app.yaml
+```
