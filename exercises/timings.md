@@ -11,10 +11,12 @@
 | Date | Lab / Topic | Attempt | Time | Mode | Blockers / Lessons Learned |
 |---|---|---|---|---|---|
 | Day 6 | Deployment, Svc, Ingress, k3d | #1 | 59 min | Assisted (AI clues) | `targetPort` vs `port` mismatch; Zsh globbing on `*` in `--rule` |
-| Day 7 | CKA Course | #2 | 4h | Assisted | Target: 4h |
-| Day 8 | CKA Course | #3 | 2h | Assisted | Target: 4h |
-| Day 9 | CKA Course | #4 | 5h | Assisted | Target: 4h |
-| Day 10 | CKA Course | #5 | 4h | Assisted | Target: 4h |
+| Day 7 | CKA Course | #2 | 4h | Assisted | General overview |
+| Day 8 | CKA Course | #3 | 2h | Assisted | Basic deepdive 1/2 |
+| Day 9 | CKA Course | #4 | 5h | Assisted | Basic deepdive 2/2 |
+| Day 10 | CKA Course | #5 | 4h | Assisted | Custom scheduler + admission control |
+| Day 11 | CKA Course | #5 | 2h | Assisted | Metric + Logging |
+
 
 
 ## Rules of Engagement
