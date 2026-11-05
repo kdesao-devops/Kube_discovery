@@ -17,6 +17,7 @@
 | Day 10 | CKA Course | #5 | 4h | Assisted | Custom scheduler + admission control |
 | Day 11 | CKA Course | #5 | 2h | Assisted | Metric + Logging |
 | Day 12 | CKA Course | #5 | 3h | Assisted | Apps LifeCycle |
+| Day 13 | CKA Course | #5 | 4h | Assisted | Environment variables |
 
 
 
