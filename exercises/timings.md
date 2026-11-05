@@ -16,6 +16,7 @@
 | Day 9 | CKA Course | #4 | 5h | Assisted | Basic deepdive 2/2 |
 | Day 10 | CKA Course | #5 | 4h | Assisted | Custom scheduler + admission control |
 | Day 11 | CKA Course | #5 | 2h | Assisted | Metric + Logging |
+| Day 12 | CKA Course | #5 | 3h | Assisted | Apps LifeCycle |
 
 
 
