@@ -136,24 +136,6 @@ k uncordon node01                    # back on the control plane — don't forge
 
 ---
 
-## kubectl ↔ API: how it actually works
-
-- There is no "kubectl server": **kubectl is just an HTTPS REST client** to the **kube-apiserver** on port **6443**.
-- On kubeadm the apiserver is a static pod with `hostNetwork: true` → it listens directly on the node IP. Being on the same node changes nothing: kubectl goes through TCP like from anywhere else.
-- The **kubeconfig** (`~/.kube/config`, `/etc/kubernetes/admin.conf`) says **where** (`server:`) and **as whom** (client cert/key or token, + CA to verify the server).
-
-```bash
-kubectl config view --minify            # where am I pointing to
-kubectl get pods -v=8                   # show the actual HTTP requests
-kubectl get --raw /api/v1/namespaces    # raw API call through kubectl
-kubectl proxy & curl localhost:8001/api/v1/namespaces/default/pods   # authenticated tunnel
-```
-
-- **On a worker**: no apiserver, and usually no admin kubeconfig → `kubectl` fails (`localhost:8080 refused`). The kubelet talks to the apiserver with its own identity (`/etc/kubernetes/kubelet.conf`).
-- **In real life** only `server:` changes: VM IP / load balancer (HA), `localhost:<port>` for k3d, `https://xxx.eks.amazonaws.com` for EKS (auth via IAM token, `aws eks get-token` exec plugin). Private endpoint → VPN / bastion / SSM port-forward.
-
----
-
 ## Backup & restore
 
 ### Why not `kubectl get all -A -o yaml > backup.yaml` + `apply`?
@@ -161,8 +143,6 @@ kubectl proxy & curl localhost:8001/api/v1/namespaces/default/pods   # authentic
 1. **`get all` isn't all**: only pods, svc, deploy, rs, sts, ds, jobs, cronjobs, hpa. Missing: ConfigMaps, Secrets, PVC/PV, RBAC, ServiceAccounts, Ingress, NetworkPolicies, CRDs + CRs, namespaces, cluster-scoped objects…
 2. **Live state, not desired state**: `status`, `uid`, `resourceVersion`, `managedFields`, `ownerReferences`, `clusterIP`… → conflicts on re-apply, and pods + RS + Deployments applied together = duplicates/orphans. No ordering (namespaces → CRDs → CRs).
 3. **Not consistent**: sequential reads while the cluster keeps changing. An etcd snapshot is atomic.
-
-(And the syntax is `k apply -f`.)
 
 | Need | Tool |
 |---|---|
