@@ -11,14 +11,15 @@
 | Date | Lab / Topic | Time | Mode | Blockers / Lessons Learned |
 |---|---|---|---|---|
 | Day 6 | Deployment, Svc, Ingress, k3d | 59 min | Assisted (AI clues) | `targetPort` vs `port` mismatch; Zsh globbing on `*` in `--rule` |
-| Day 7 | CKA Course | 4h | Assisted | General overview |
-| Day 8 | CKA Course | 2h | Assisted | Basic deepdive 1/2 |
-| Day 9 | CKA Course | 5h | Assisted | Basic deepdive 2/2 |
-| Day 10 | CKA Course | 4h | Assisted | Custom scheduler + admission control |
-| Day 11 | CKA Course | 2h | Assisted | Metric + Logging |
-| Day 12 | CKA Course | 3h | Assisted | Apps LifeCycle |
-| Day 13 | CKA Course | 4h | Assisted | Environment variables |
-| Day 14 | CKA Course | 3h | Assisted | Multi-container pods, autoscaling |
+| Day 7 | CKA Course | 4h | Course | General overview |
+| Day 8 | CKA Course | 2h | Course | Basic deepdive 1/2 |
+| Day 9 | CKA Course | 5h | Course | Basic deepdive 2/2 |
+| Day 10 | CKA Course | 4h | Course | Custom scheduler + admission control |
+| Day 11 | CKA Course | 2h | Course | Metric + Logging |
+| Day 12 | CKA Course | 3h | Course | Apps LifeCycle |
+| Day 13 | CKA Course | 4h | Course | Environment variables |
+| Day 14 | CKA Course | 3h | Course | Multi-container pods, autoscaling |
+| Day 15 | CKA Course | 3h | Course | Cluster maintenance |
 
 
 
@@ -26,3 +27,4 @@
 ## Rules of Engagement
 - **Solo:** Only official Kubernetes documentation (`kubernetes.io/docs`) and `kubectl explain`.
 - **Assisted:** External prompts, search engines, or AI feedback.
+- **Course** Video + Lab on udemy
