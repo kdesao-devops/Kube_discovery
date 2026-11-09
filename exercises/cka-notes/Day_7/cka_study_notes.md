@@ -89,6 +89,7 @@ Kubernetes follows a client-server architecture split into two main layers:
 
 ### 2.3 `kube-controller-manager`
 * **Role:** Runs continuous control loops (reconciliation) comparing **desired state** (declared in YAML) with **current state** (observed in cluster).
+* **Signing certificate** On top on the rest it also managed the signing and certificate request.
 * **Built-in controllers include:**
   * Node Controller (detects unavailable nodes).
   * Replication / ReplicaSet Controller.
