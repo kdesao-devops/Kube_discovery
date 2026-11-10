@@ -21,6 +21,7 @@
 | Day 14 | CKA Course | 3h | Course | Multi-container pods, autoscaling |
 | Day 15 | CKA Course | 3h | Course | Cluster maintenance |
 | Day 16 | CKA Course | 4h | Course | Security 1/2 |
+| Day 17 | CKA Course | 5h | Course | Security 2/2 |
 
 
 
