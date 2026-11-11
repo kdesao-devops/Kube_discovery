@@ -53,7 +53,7 @@ Kubernetes: containerd does the same job with "snapshotters" (overlayfs by defau
 
 ## Volume driver vs CSI
 
-| | |
+| Interface | Description |
 |---|---|
 | **Volume driver** | Docker-only plugin API to use external volume providers (e.g. RexRay for AWS EBS, abandoned) |
 | **CSI** (Container Storage Interface) | Open standard (gRPC) for storage drivers, shared by Kubernetes and other orchestrators. The vendor ships the driver outside K8s code (e.g. `ebs.csi.aws.com`), referenced in `StorageClass.provisioner`. Same idea as CRI (runtime) and CNI (network). |
@@ -63,7 +63,7 @@ Kubernetes: containerd does the same job with "snapshotters" (overlayfs by defau
 
 ## Persistent volume vs persistent volume claim
 
-| | |
+| Object | Role |
 |---|---|
 | **Persistent volume (PV)** | Cluster-wide storage resource, created by the admin (static) or by a provisioner via a StorageClass (dynamic) |
 | **Persistent volume claim (PVC)** | Namespaced request (size, access mode, storage class); K8s binds it to a matching PV (1:1) |
