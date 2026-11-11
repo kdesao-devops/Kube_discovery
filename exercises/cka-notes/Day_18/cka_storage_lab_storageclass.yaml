@@ -1,0 +1,39 @@
+# LAB — Storage class
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: local-pvc
+spec:
+  storageClassName: local-path            # WaitForFirstConsumer: PVC stays Pending until a pod uses it
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx:alpine
+    name: nginx
+    volumeMounts:
+    - name: local-pvc
+      mountPath: /var/www/html
+  volumes:
+  - name: local-pvc
+    persistentVolumeClaim:
+      claimName: local-pvc
+---
+# Creation of a StorageClass
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: delayed-volume-sc
+provisioner: kubernetes.io/no-provisioner # no dynamic provisioning: PVs must be created by hand (local volumes)
+volumeBindingMode: WaitForFirstConsumer   # binding delayed until a pod using the PVC is scheduled

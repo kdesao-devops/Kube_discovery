@@ -1,0 +1,14 @@
+# LAB — Persistent volume claim
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: claim-log-1
+spec:
+  # no storageClassName: if the cluster has a default StorageClass, it gets assigned
+  # automatically and the PVC no longer binds to a PV without class -> Pending
+  accessModes:
+    - ReadWriteOnce                       # must be offered by the PV
+  resources:
+    requests:
+      storage: 50Mi                       # PV capacity must be >= this

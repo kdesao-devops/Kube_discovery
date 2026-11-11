@@ -1,0 +1,30 @@
+# LAB — CSI volume storage (TopoLVM)
+# PVC on the TopoLVM StorageClass + pod that mounts it
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: lab-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: topolvm-provisioner   # StorageClass created by the TopoLVM helm chart
+  resources:
+    requests:
+      storage: 512Mi                      # later patched to 1Gi (online resize)
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lab-app
+spec:
+  containers:
+    - name: app
+      image: nginx
+      volumeMounts:
+        - name: data                      # = volumes[].name
+          mountPath: /data
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: lab-data               # = metadata.name of the PVC
