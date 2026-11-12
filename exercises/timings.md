@@ -23,6 +23,7 @@
 | Day 16 | CKA Course | 4h | Course | Security 1/2 |
 | Day 17 | CKA Course | 5h | Course | Security 2/2 |
 | Day 18 | CKA Course | 4h | Course | Storage |
+| Day 19 | CKA Course | 2h | Course | Network 1/2 |
 
 
 
