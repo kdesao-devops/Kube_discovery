@@ -26,6 +26,7 @@
 | Day 19 | CKA Course | 2h | Course | Network 1/2 |
 | Day 20 | CKA Course | 2h | Course | Network 2/3 |
 | Day 21 | CKA Course | 5h | Course | Network 3/3 |
+| Day 22 | CKA Course | 5h | Course | Cluster install (kubeadm) |
 
 
 
